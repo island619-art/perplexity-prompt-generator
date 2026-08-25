@@ -579,7 +579,9 @@ document.getElementById('copyBtn').addEventListener('click', () => {
   });
 });
 
-const shareUrl = location.href.split('#')[0].split('?')[0];
+const shareUrl = location.protocol.startsWith('http')
+  ? location.href.split('#')[0].split('?')[0]
+  : 'https://island619-art.github.io/perplexity-prompt-generator/';
 document.getElementById('shareLinkText').textContent = shareUrl;
 document.getElementById('shareQr').src =
   'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(shareUrl);
