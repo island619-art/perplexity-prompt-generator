@@ -230,6 +230,58 @@
     opacity: .7;
     margin-top: 8px;
   }
+
+  .share-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .share-section h2 {
+    font-size: 14px;
+    margin: 0 0 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+  .share-qr-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .share-qr-box img {
+    display: block;
+    width: 160px;
+    height: 160px;
+  }
+  .share-qr-box .share-link {
+    font-size: 11px;
+    color: #333;
+    word-break: break-all;
+    max-width: 180px;
+  }
+  .share-copy-btn {
+    margin-top: 10px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .share-copy-btn:hover { border-color: var(--accent); }
+  .share-copy-btn.copied { border-color: var(--accent-2); color: var(--accent-2); }
+
+  .app-tag {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    opacity: .6;
+    margin-top: 16px;
+  }
 </style>
 </head>
 <body>
@@ -325,10 +377,23 @@
     <p class="ad-disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
   </div>
 
+  <div class="share-section">
+    <h2>공유하기</h2>
+    <div class="share-qr-box">
+      <img id="shareQr" src="" alt="공유 QR 코드">
+      <span class="share-link" id="shareLinkText"></span>
+    </div>
+    <div>
+      <button type="button" class="share-copy-btn" id="shareCopyBtn">🔗 링크 복사</button>
+    </div>
+  </div>
+
   <footer>
-    <span>모든 처리는 브라우저 안에서만 이루어지며 외부로 전송되지 않습니다.</span>
+    <span>프롬프트 생성은 브라우저 안에서만 처리되며 외부로 전송되지 않습니다.</span>
     <span class="credit">작성자 NK_Jessieca</span>
   </footer>
+
+  <p class="app-tag">Perplexity 프롬생성</p>
 </div>
 
 <script>
@@ -509,6 +574,23 @@ document.getElementById('copyBtn').addEventListener('click', () => {
     btn.classList.add('copied');
     setTimeout(() => {
       btn.textContent = '📋 복사하기';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+});
+
+const shareUrl = location.href.split('#')[0].split('?')[0];
+document.getElementById('shareLinkText').textContent = shareUrl;
+document.getElementById('shareQr').src =
+  'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(shareUrl);
+
+document.getElementById('shareCopyBtn').addEventListener('click', () => {
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    const btn = document.getElementById('shareCopyBtn');
+    btn.textContent = '✅ 복사됨';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '🔗 링크 복사';
       btn.classList.remove('copied');
     }, 1500);
   });
