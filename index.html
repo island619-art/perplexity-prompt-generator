@@ -311,7 +311,10 @@
       </div>
     </details>
 
-    <button class="generate-btn" id="generateBtn">✨ 프롬프트 생성하기</button>
+    <div style="display:flex; gap:8px; margin-top:16px;">
+      <button class="generate-btn" id="generateBtn" style="margin-top:0; flex:1;">✨ 프롬프트 생성하기</button>
+      <button class="copy-btn" id="resetBtn">🔄 초기화</button>
+    </div>
   </div>
 
   <div class="card" id="output-section">
@@ -320,8 +323,9 @@
       <span class="badge" id="modeBadge"></span>
     </div>
     <textarea id="promptOutput" readonly></textarea>
-    <div style="margin-top:10px; display:flex; gap:8px;">
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
       <button class="copy-btn" id="copyBtn">📋 복사하기</button>
+      <button class="copy-btn" id="searchBtn">🔍 Perplexity에서 검색</button>
     </div>
     <div class="tips" id="tipsBox"></div>
   </div>
@@ -529,6 +533,21 @@ document.getElementById('copyBtn').addEventListener('click', () => {
       btn.classList.remove('copied');
     }, 1500);
   });
+});
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+  const prompt = document.getElementById('promptOutput').value;
+  window.open('https://www.perplexity.ai/search?q=' + encodeURIComponent(prompt), '_blank');
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  document.getElementById('goalInput').value = '';
+  document.querySelectorAll('.adv-grid input').forEach(input => input.value = '');
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.mode-btn[data-mode="auto"]').classList.add('active');
+  selectedMode = 'auto';
+  document.getElementById('output-section').style.display = 'none';
+  document.getElementById('goalInput').focus();
 });
 
 </script>
