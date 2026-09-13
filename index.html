@@ -542,11 +542,6 @@ document.getElementById('searchBtn').addEventListener('click', () => {
 
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('goalInput').value = '';
-  document.querySelectorAll('.adv-grid input').forEach(input => input.value = '');
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.mode-btn[data-mode="auto"]').classList.add('active');
-  selectedMode = 'auto';
-  document.getElementById('output-section').style.display = 'none';
   document.getElementById('goalInput').focus();
 });
 
