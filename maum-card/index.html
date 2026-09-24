@@ -539,7 +539,7 @@ function refreshSource() {
   const src = SOURCES.find((x) => x.key === state.bgMode);
   $('sourceHint').innerHTML = src
     ? `배경: <b>${src.short}</b> · 문구: <b>${keys.gemini ? 'AI' : '기본 문구'}</b>`
-    : '⚙️ 설정에서 API 키를 하나만 넣으면 사진·AI 그림 배경이 나와요.';
+    : '';
   if (prev !== state.bgMode) {
     state.bgImage = null;
     if (state.phrase && state.bgMode !== 'gradient') makeBackground();
