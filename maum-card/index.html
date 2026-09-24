@@ -68,6 +68,7 @@
 
   .grid { display: grid; gap: 10px; }
   .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   @media (max-width: 560px) { .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
@@ -168,7 +169,7 @@
       <!-- 1. 카드 설정 -->
       <section class="card">
         <h2><span class="num">1</span>카드 설정을 고르세요</h2>
-        <div class="grid g3">
+        <div class="grid g2">
           <label class="pick"><span>🌸 주제</span><select id="selTopic"></select></label>
           <label class="pick"><span>📱 이미지 비율</span><select id="selRatio"></select></label>
           <label class="pick"><span>📝 글 줄 수</span><select id="selLines"></select></label>
