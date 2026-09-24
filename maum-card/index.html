@@ -102,13 +102,6 @@
   .hint b { color: var(--accent); }
   .divider { height: 1px; background: var(--border); margin: 14px 0; }
 
-  .cands { display: grid; gap: 10px; }
-  .cand {
-    white-space: pre-line; text-align: left; background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
-    padding: 12px 14px; cursor: pointer; font-size: 15px; color: var(--text); line-height: 1.6;
-  }
-  .cand:hover { border-color: #ee9bbd; }
-  .cand.active { border-color: var(--accent); background: var(--accent-soft); }
   .loading { text-align: center; color: var(--text-dim); padding: 18px 0; }
   .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid var(--accent-soft); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -4px; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -312,7 +305,7 @@
     <div class="guide-lead">클릭 몇 번으로 완성하는 부모님·지인·고객을 위한 감성 이미지!</div>
     <div class="guide-step"><span class="n">1</span><div>
       <h3>주제 고르기</h3>
-      <p>1번 <b>주제</b> 목록에서 명언, 건강 기원, 아침 인사, 명절 인사, 고객 감사 중 하나를 골라요. "✍️ 직접 입력"을 고르면 "비 오는 날"처럼 원하는 주제를 적을 수 있어요.</p>
+      <p>1번 <b>주제</b> 목록에서 명언, 건강 기원, 아침 인사, 명절 인사, 생일 축하, 고객 감사 중 하나를 골라요. "✍️ 직접 입력"을 고르면 "비 오는 날"처럼 원하는 주제를 적을 수 있어요.</p>
     </div></div>
     <div class="guide-step"><span class="n">2</span><div>
       <h3>API 키 넣기 (선택)</h3>
@@ -324,7 +317,7 @@
     </div></div>
     <div class="guide-step"><span class="n">4</span><div>
       <h3>문구 고르고 꾸미기</h3>
-      <p>마음에 드는 문구를 누르면 이미지가 완성돼요. 문구를 직접 고치고, 글꼴·크기·색·위치를 바꾸고, "○○ 드림" 같은 이름도 넣을 수 있어요. 이름은 한 번 적으면 기억해요.</p>
+      <p>2번 목록에서 마음에 드는 문구를 고르면 이미지가 완성돼요. 문구를 직접 고치고, 글꼴·크기·색·위치를 바꾸고, "○○ 드림" 같은 이름도 넣을 수 있어요. 이름은 한 번 적으면 기억해요.</p>
     </div></div>
     <div class="guide-step"><span class="n">5</span><div>
       <h3>저장하고 보내기</h3>
@@ -348,6 +341,7 @@ const TOPICS = [
   { key: 'share',   ico: '🌻', name: '카톡/밴드 공유', desc: '따뜻한 안부 메시지',   grad: '노을',   kw: 'warm coffee flowers' },
   { key: 'morning', ico: '☀️', name: '아침 인사',     desc: '상쾌한 하루 시작',     grad: '새벽',   kw: 'morning sunrise' },
   { key: 'holiday', ico: '🌕', name: '명절 인사',     desc: '추석·설 덕담',         grad: '가을',   kw: 'full moon autumn' },
+  { key: 'birthday', ico: '🎂', name: '생일 축하',    desc: '생일 축하 메시지',     grad: '노을',   kw: 'birthday cake flowers' },
   { key: 'thanks',  ico: '💝', name: '고객 감사',     desc: '고객님께 드리는 인사', grad: '밤하늘', kw: 'gratitude flowers bouquet' },
 ];
 
@@ -426,6 +420,13 @@ const LIBRARY = {
     '오랜만에 모인 가족\n웃음꽃 활짝 피고\n\n정겨운 이야기로\n따뜻한 명절 되세요',
     '고향 가는 길\n안전하게 다녀오시고\n\n두 손 가득\n복 담아 오세요',
     '올 한 해도\n곁에 있어 감사했어요\n\n더 건강하고\n더 행복한 날 되세요',
+  ],
+  birthday: [
+    '생일 축하해요\n태어나 주어서\n\n고맙고 또 고마운\n오늘입니다',
+    '케이크 위 촛불처럼\n환하게 빛나는 날\n\n올 한 해도\n웃음만 가득하길',
+    '당신이 태어난 오늘\n세상이 더 따뜻해졌어요\n\n진심으로\n생일 축하합니다',
+    '건강하고 행복하게\n오래오래 함께해요\n\n생일을\n마음 다해 축하해요',
+    '한 살 더 먹은 만큼\n복도 두 배로\n\n행복한 생일\n보내세요',
   ],
   thanks: [
     '늘 믿고 맡겨 주셔서\n진심으로 감사합니다\n\n고객님의 든든한 곁을\n늘 지키겠습니다',
@@ -580,7 +581,6 @@ async function makeCandidates() {
   const area = $('candArea');
   area.innerHTML = '<div class="loading"><span class="spinner"></span>문구를 만들고 있어요…</div>';
   let list;
-  let fromLibrary = false;
   if (keys.gemini) {
     try {
       list = await geminiPhrases();
@@ -591,22 +591,15 @@ async function makeCandidates() {
   }
   if (!list || !list.length) {
     list = LIBRARY[state.topicKey] || [...LIBRARY.quote.slice(0, 3), ...LIBRARY.share.slice(0, 2)];
-    fromLibrary = true;
   }
   state.candidates = list;
-  area.innerHTML = `<p class="hint" style="margin:0 0 8px;text-align:center">마음에 드는 문구를 누르세요${fromLibrary ? ' · <b>기본 문구</b> (Gemini 키를 넣으면 AI가 새로 써 줘요)' : ''}</p><div class="cands" id="cands"></div>`;
-  const wrap = $('cands');
-  list.forEach((p) => {
-    const b = document.createElement('button');
-    b.className = 'cand';
-    b.textContent = p;
-    b.onclick = () => {
-      wrap.querySelectorAll('.cand').forEach((x) => x.classList.remove('active'));
-      b.classList.add('active');
-      pickPhrase(p);
-    };
-    wrap.appendChild(b);
-  });
+  const nums = ['①', '②', '③', '④', '⑤'];
+  area.innerHTML = `<label class="pick"><span>💬 문구 (${list.length}개)</span><select id="selPhrase"></select></label>`;
+  fillSelect('selPhrase', [
+    ['', '마음에 드는 문구를 고르세요', true],
+    ...list.map((p, i) => [i, `${nums[i] || i + 1} ${escapeHtml(p.split('\n').filter((l) => l.trim()).join(' / '))}`]),
+  ], '');
+  $('selPhrase').onchange = (e) => pickPhrase(list[Number(e.target.value)]);
 }
 
 async function geminiPhrases() {
