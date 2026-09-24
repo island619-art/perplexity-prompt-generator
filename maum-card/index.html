@@ -225,14 +225,15 @@
             <div class="full"><label class="check" style="margin:0;font-weight:400"><input type="checkbox" id="shadow" checked> 글자 그림자 (잘 보이게)</label></div>
           </div>
 
-          <label class="check"><input type="checkbox" id="titleOn"> 제목 넣기</label>
-          <div class="ctrl" id="titleCtrl" style="display:none">
-            <div class="full"><input type="text" id="titleText" placeholder="예: 행복한 한가위"></div>
+          <div class="grid g2" style="margin:12px 0 8px;gap:6px 10px">
+            <label class="check" style="margin:0"><input type="checkbox" id="titleOn"> 제목 넣기</label>
+            <label class="check" style="margin:0"><input type="checkbox" id="sigOn"> 이름·서명 넣기</label>
+            <div><input type="text" id="titleText" placeholder="예: 행복한 한가위" style="display:none"></div>
+            <div><input type="text" id="sigText" placeholder="예: ○○보험 홍길동 드림" style="display:none"></div>
           </div>
 
-          <label class="check"><input type="checkbox" id="sigOn"> 이름·서명 넣기</label>
           <div class="ctrl" id="sigCtrl" style="display:none">
-            <div class="full"><input type="text" id="sigText" placeholder="예: ○○보험 홍길동 드림"><p class="hint" style="margin-top:4px">한 번 적으면 다음에도 기억해요.</p></div>
+            <div class="full"><p class="hint" style="margin:0">✍️ 이름은 한 번 적으면 다음에도 기억해요.</p></div>
             <div><label>크기 (<span id="sigSizeV">120</span>%)</label><input type="range" id="sigSize" min="60" max="200" value="120"></div>
             <div><label>세로 위치</label><input type="range" id="sigY" min="-90" max="95" value="78"></div>
             <div class="full"><label>이름 색</label><div class="swatches" id="sigColors"></div></div>
@@ -909,19 +910,19 @@ function initDeco() {
 
   $('titleOn').onchange = (e) => {
     state.titleOn = e.target.checked;
-    $('titleCtrl').style.display = state.titleOn ? '' : 'none';
+    $('titleText').style.display = state.titleOn ? '' : 'none';
     if (state.titleOn && !state.title) { state.title = state.topicName; $('titleText').value = state.title; }
     render();
   };
   $('titleText').oninput = (e) => { state.title = e.target.value; render(); };
 
   $('sigOn').checked = state.sigOn;
-  $('sigCtrl').style.display = state.sigOn ? '' : 'none';
+  $('sigCtrl').style.display = $('sigText').style.display = state.sigOn ? '' : 'none';
   $('sigText').value = state.sig;
   $('sigOn').onchange = (e) => {
     state.sigOn = e.target.checked;
     store.set('sigOn', state.sigOn ? '1' : '0');
-    $('sigCtrl').style.display = state.sigOn ? '' : 'none';
+    $('sigCtrl').style.display = $('sigText').style.display = state.sigOn ? '' : 'none';
     render();
   };
   $('sigText').oninput = (e) => { state.sig = e.target.value; store.set('sig', state.sig); render(); };
