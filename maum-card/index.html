@@ -305,7 +305,7 @@
     <div class="guide-lead">클릭 몇 번으로 완성하는 부모님·지인·고객을 위한 감성 이미지!</div>
     <div class="guide-step"><span class="n">1</span><div>
       <h3>주제 고르기</h3>
-      <p>1번 <b>주제</b> 목록에서 명언, 건강 기원, 아침 인사, 명절 인사, 고객 감사 중 하나를 골라요. "✍️ 직접 입력"을 고르면 "비 오는 날"처럼 원하는 주제를 적을 수 있어요.</p>
+      <p>1번 <b>주제</b> 목록에서 명언, 건강 기원, 아침 인사, 명절 인사, 생일 축하, 고객 감사 중 하나를 골라요. "✍️ 직접 입력"을 고르면 "비 오는 날"처럼 원하는 주제를 적을 수 있어요.</p>
     </div></div>
     <div class="guide-step"><span class="n">2</span><div>
       <h3>API 키 넣기 (선택)</h3>
@@ -341,6 +341,7 @@ const TOPICS = [
   { key: 'share',   ico: '🌻', name: '카톡/밴드 공유', desc: '따뜻한 안부 메시지',   grad: '노을',   kw: 'warm coffee flowers' },
   { key: 'morning', ico: '☀️', name: '아침 인사',     desc: '상쾌한 하루 시작',     grad: '새벽',   kw: 'morning sunrise' },
   { key: 'holiday', ico: '🌕', name: '명절 인사',     desc: '추석·설 덕담',         grad: '가을',   kw: 'full moon autumn' },
+  { key: 'birthday', ico: '🎂', name: '생일 축하',    desc: '생일 축하 메시지',     grad: '노을',   kw: 'birthday cake flowers' },
   { key: 'thanks',  ico: '💝', name: '고객 감사',     desc: '고객님께 드리는 인사', grad: '밤하늘', kw: 'gratitude flowers bouquet' },
 ];
 
@@ -419,6 +420,13 @@ const LIBRARY = {
     '오랜만에 모인 가족\n웃음꽃 활짝 피고\n\n정겨운 이야기로\n따뜻한 명절 되세요',
     '고향 가는 길\n안전하게 다녀오시고\n\n두 손 가득\n복 담아 오세요',
     '올 한 해도\n곁에 있어 감사했어요\n\n더 건강하고\n더 행복한 날 되세요',
+  ],
+  birthday: [
+    '생일 축하해요\n태어나 주어서\n\n고맙고 또 고마운\n오늘입니다',
+    '케이크 위 촛불처럼\n환하게 빛나는 날\n\n올 한 해도\n웃음만 가득하길',
+    '당신이 태어난 오늘\n세상이 더 따뜻해졌어요\n\n진심으로\n생일 축하합니다',
+    '건강하고 행복하게\n오래오래 함께해요\n\n생일을\n마음 다해 축하해요',
+    '한 살 더 먹은 만큼\n복도 두 배로\n\n행복한 생일\n보내세요',
   ],
   thanks: [
     '늘 믿고 맡겨 주셔서\n진심으로 감사합니다\n\n고객님의 든든한 곁을\n늘 지키겠습니다',
