@@ -197,6 +197,11 @@
     <div class="preview-col" id="previewCol">
       <section class="card">
         <h2><span class="num">3</span>완성 이미지</h2>
+        <div class="save-row" style="margin-top:0">
+          <button class="btn big" id="saveBtn">💾 저장하기</button>
+          <button class="btn big sub" id="shareBtn">💬 공유하기</button>
+        </div>
+        <p class="hint" style="margin:6px 0 12px;text-align:center">휴대폰에서는 <b>공유하기</b>를 누르면 카톡·밴드로 바로 보낼 수 있어요.</p>
         <div class="canvas-box">
           <canvas id="canvas"></canvas>
           <div class="canvas-busy" id="canvasBusy"><span class="spinner"></span><span id="busyText">배경을 만들고 있어요…</span></div>
@@ -233,12 +238,6 @@
             <div><label>세로 위치</label><input type="range" id="sigY" min="-90" max="95" value="78"></div>
             <div class="full"><label>이름 색</label><div class="swatches" id="sigColors"></div></div>
           </div>
-
-          <div class="save-row">
-            <button class="btn big" id="saveBtn">💾 저장하기</button>
-            <button class="btn big sub" id="shareBtn">💬 공유하기</button>
-          </div>
-          <p class="hint">휴대폰에서는 <b>공유하기</b>를 누르면 카톡·밴드로 바로 보낼 수 있어요.</p>
         </div>
       </section>
     </div>
