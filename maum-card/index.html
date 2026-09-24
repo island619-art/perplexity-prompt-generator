@@ -102,13 +102,6 @@
   .hint b { color: var(--accent); }
   .divider { height: 1px; background: var(--border); margin: 14px 0; }
 
-  .cands { display: grid; gap: 10px; }
-  .cand {
-    white-space: pre-line; text-align: left; background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
-    padding: 12px 14px; cursor: pointer; font-size: 15px; color: var(--text); line-height: 1.6;
-  }
-  .cand:hover { border-color: #ee9bbd; }
-  .cand.active { border-color: var(--accent); background: var(--accent-soft); }
   .loading { text-align: center; color: var(--text-dim); padding: 18px 0; }
   .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid var(--accent-soft); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -4px; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -324,7 +317,7 @@
     </div></div>
     <div class="guide-step"><span class="n">4</span><div>
       <h3>문구 고르고 꾸미기</h3>
-      <p>마음에 드는 문구를 누르면 이미지가 완성돼요. 문구를 직접 고치고, 글꼴·크기·색·위치를 바꾸고, "○○ 드림" 같은 이름도 넣을 수 있어요. 이름은 한 번 적으면 기억해요.</p>
+      <p>2번 목록에서 마음에 드는 문구를 고르면 이미지가 완성돼요. 문구를 직접 고치고, 글꼴·크기·색·위치를 바꾸고, "○○ 드림" 같은 이름도 넣을 수 있어요. 이름은 한 번 적으면 기억해요.</p>
     </div></div>
     <div class="guide-step"><span class="n">5</span><div>
       <h3>저장하고 보내기</h3>
@@ -580,7 +573,6 @@ async function makeCandidates() {
   const area = $('candArea');
   area.innerHTML = '<div class="loading"><span class="spinner"></span>문구를 만들고 있어요…</div>';
   let list;
-  let fromLibrary = false;
   if (keys.gemini) {
     try {
       list = await geminiPhrases();
@@ -591,22 +583,15 @@ async function makeCandidates() {
   }
   if (!list || !list.length) {
     list = LIBRARY[state.topicKey] || [...LIBRARY.quote.slice(0, 3), ...LIBRARY.share.slice(0, 2)];
-    fromLibrary = true;
   }
   state.candidates = list;
-  area.innerHTML = `<p class="hint" style="margin:0 0 8px;text-align:center">마음에 드는 문구를 누르세요${fromLibrary ? ' · <b>기본 문구</b> (Gemini 키를 넣으면 AI가 새로 써 줘요)' : ''}</p><div class="cands" id="cands"></div>`;
-  const wrap = $('cands');
-  list.forEach((p) => {
-    const b = document.createElement('button');
-    b.className = 'cand';
-    b.textContent = p;
-    b.onclick = () => {
-      wrap.querySelectorAll('.cand').forEach((x) => x.classList.remove('active'));
-      b.classList.add('active');
-      pickPhrase(p);
-    };
-    wrap.appendChild(b);
-  });
+  const nums = ['①', '②', '③', '④', '⑤'];
+  area.innerHTML = `<label class="pick"><span>💬 문구 (${list.length}개)</span><select id="selPhrase"></select></label>`;
+  fillSelect('selPhrase', [
+    ['', '마음에 드는 문구를 고르세요', true],
+    ...list.map((p, i) => [i, `${nums[i] || i + 1} ${escapeHtml(p.split('\n').filter((l) => l.trim()).join(' / '))}`]),
+  ], '');
+  $('selPhrase').onchange = (e) => pickPhrase(list[Number(e.target.value)]);
 }
 
 async function geminiPhrases() {
