@@ -201,6 +201,7 @@
           <canvas id="canvas"></canvas>
           <div class="canvas-busy" id="canvasBusy"><span class="spinner"></span><span id="busyText">배경을 만들고 있어요…</span></div>
         </div>
+        <button class="btn sub" id="rebg" style="width:100%;margin-top:12px">🔄 배경 다시 만들기</button>
       </section>
     </div>
 
@@ -209,9 +210,7 @@
       <section class="card">
         <h2>✨ 꾸미고 저장하기</h2>
         <div class="deco" style="margin-top:0">
-          <button class="btn sub" id="rebg" style="width:100%">🔄 배경 다시 만들기</button>
-
-          <h3>🎨 본문 꾸미기</h3>
+          <h3 style="margin-top:0">🎨 본문 꾸미기</h3>
           <div class="ctrl">
             <div class="full"><label>글꼴</label><select id="font"></select></div>
             <div><label>크기 (<span id="textSizeV">100</span>%)</label><input type="range" id="textSize" min="60" max="160" value="100"></div>
