@@ -47,19 +47,16 @@
     border-radius: 999px; padding: 7px 16px; font-size: 14px; cursor: pointer;
   }
 
+  /* PC: 왼쪽 = 설정·문구·꾸미기, 오른쪽 = 완성 이미지 */
   .layout {
-    display: grid; gap: 20px; align-items: start;
+    display: grid; gap: 0 20px; align-items: start;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    grid-template-areas: "steps preview" "steps deco";
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "steps preview" "deco preview";
   }
   .steps-col { grid-area: steps; }
   .deco-col { grid-area: deco; }
   .preview-col { grid-area: preview; }
-  /* 넓은 PC: 단계 | 꾸미기 | 완성 이미지 */
-  @media (min-width: 1024px) {
-    .wrap { max-width: 1480px; }
-    .layout { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.95fr) minmax(0, 0.95fr); grid-template-areas: "steps deco preview"; }
-  }
   @media (max-width: 900px) { .layout { grid-template-columns: 1fr; grid-template-areas: "steps" "preview" "deco"; } }
 
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(214, 51, 108, .05); }
@@ -187,10 +184,12 @@
       <section class="card">
         <h2><span class="num">2</span>마음에 드는 문구를 고르세요</h2>
         <div id="candArea"><p class="hint" style="text-align:center;margin:0">1번에서 <b>글 스타일</b>을 고르면 문구가 나와요.</p></div>
-        <div class="deco">
-          <h3>✏️ 문구 직접 고치기</h3>
-          <textarea id="phraseEdit" rows="5" placeholder="위에서 문구를 고르면 여기에 나와요. 직접 써도 돼요."></textarea>
-        </div>
+      </section>
+
+      <!-- 문구 직접 고치기 -->
+      <section class="card">
+        <h2>✏️ 문구 직접 고치기</h2>
+        <textarea id="phraseEdit" rows="5" placeholder="2번에서 문구를 고르면 여기에 나와요. 직접 써도 돼요."></textarea>
       </section>
     </div>
 
