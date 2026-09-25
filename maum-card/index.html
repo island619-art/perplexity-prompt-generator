@@ -64,10 +64,7 @@
   .card h2 .num { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; align-items: center; justify-content: center; margin-right: 6px; vertical-align: 1px; }
 
   .grid { display: grid; gap: 10px; }
-  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  @media (max-width: 560px) { .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
   .opt {
     background: var(--panel-2); border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 10px;
@@ -75,9 +72,7 @@
   }
   .opt:hover { border-color: #b8a2ee; }
   .opt.active { background: var(--accent-soft); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .opt .ico { font-size: 22px; display: block; }
   .opt .name { font-weight: 700; font-size: 15px; display: block; color: #5b21b6; }
-  .opt .desc { font-size: 12px; color: var(--text-dim); display: block; margin-top: 2px; }
   .opt .badge { font-size: 11px; display: block; margin-top: 3px; color: var(--text-dim); }
   .opt .badge.ok { color: var(--ok); font-weight: 700; }
 
@@ -99,7 +94,6 @@
   .btn:disabled { opacity: .5; cursor: default; }
   .hint { font-size: 13px; color: var(--text-dim); margin: 8px 0 0; }
   .hint b { color: var(--accent); }
-  .divider { height: 1px; background: var(--border); margin: 14px 0; }
 
   .loading { text-align: center; color: var(--text-dim); padding: 18px 0; }
   .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid var(--accent-soft); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -4px; margin-right: 6px; }
@@ -337,13 +331,13 @@ const GEMINI_IMAGE_MODEL = 'gemini-2.5-flash-image';
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
 const TOPICS = [
-  { key: 'quote',   ico: '🌸', name: '명언·좋은 글',   desc: '삶에 관한 조언과 교훈', grad: '라벤더', kw: 'peaceful nature landscape' },
-  { key: 'health',  ico: '🌺', name: '건강·행복 기원', desc: '덕담과 응원의 말',     grad: '숲',     kw: 'flowers garden sunshine' },
-  { key: 'share',   ico: '🌻', name: 'SNS 안부', desc: '따뜻한 안부 메시지',   grad: '노을',   kw: 'warm coffee flowers' },
-  { key: 'morning', ico: '☀️', name: '아침 인사',     desc: '상쾌한 하루 시작',     grad: '새벽',   kw: 'morning sunrise' },
-  { key: 'holiday', ico: '🌕', name: '명절 인사',     desc: '추석·설 덕담',         grad: '가을',   kw: 'full moon autumn' },
-  { key: 'birthday', ico: '🎂', name: '생일 축하',    desc: '생일 축하 메시지',     grad: '노을',   kw: 'birthday cake flowers' },
-  { key: 'thanks',  ico: '💝', name: '고객 감사',     desc: '고객님께 드리는 인사', grad: '밤하늘', kw: 'gratitude flowers bouquet' },
+  { key: 'quote',   name: '명언·좋은 글', grad: '라벤더', kw: 'peaceful nature landscape' },
+  { key: 'health',  name: '건강·행복 기원', grad: '숲',     kw: 'flowers garden sunshine' },
+  { key: 'share',   name: 'SNS 안부', grad: '노을',   kw: 'warm coffee flowers' },
+  { key: 'morning', name: '아침 인사', grad: '새벽',   kw: 'morning sunrise' },
+  { key: 'holiday', name: '명절 인사', grad: '가을',   kw: 'full moon autumn' },
+  { key: 'birthday', name: '생일 축하', grad: '노을',   kw: 'birthday cake flowers' },
+  { key: 'thanks',  name: '고객 감사', grad: '밤하늘', kw: 'gratitude flowers bouquet' },
 ];
 
 // 설정에서 넣은 키 하나로 배경을 만든다 (키가 없으면 그라데이션)
@@ -363,16 +357,16 @@ const GRADIENTS = {
 };
 
 const RATIOS = [
-  { key: '9:16', ico: '📱', name: '세로형 9:16', w: 1080, h: 1920 },
-  { key: '1:1',  ico: '🖼️', name: '정사각형 1:1', w: 1080, h: 1080 },
-  { key: '3:4',  ico: '📄', name: '세로형 3:4', w: 1080, h: 1440 },
+  { key: '9:16', name: '세로 9:16', w: 1080, h: 1920 },
+  { key: '1:1',  name: '정사각 1:1', w: 1080, h: 1080 },
+  { key: '3:4',  name: '세로 3:4', w: 1080, h: 1440 },
 ];
 
 const STYLES = [
-  { key: 'poem',  name: '시',       desc: '운율과 감성이 담긴' },
-  { key: 'essay', name: '에세이',   desc: '서정적이고 사색적인' },
-  { key: 'short', name: '짧은 문장', desc: '1~3문장의 간결한' },
-  { key: 'world', name: '세계 명언', desc: '유명 인물의 명언' },
+  { key: 'poem',  name: '시' },
+  { key: 'essay', name: '에세이' },
+  { key: 'short', name: '짧은 문장' },
+  { key: 'world', name: '세계 명언' },
 ];
 
 // '세계 명언' 스타일 기본 목록 (출처가 널리 알려진 명언)
@@ -505,7 +499,6 @@ const state = {
   ratio: '9:16',
   lines: 5,
   style: null,
-  candidates: [],
   phrase: '',
   bgImage: null,
   font: store.get('font', 'Nanum Myeongjo'),
@@ -555,7 +548,7 @@ function fillSelect(id, items, value) {
 
 function initPicks() {
   fillSelect('selTopic', [...TOPICS.map((t) => [t.key, t.name]), ['custom', '직접 입력']], state.topicKey);
-  fillSelect('selRatio', [['9:16', '세로 9:16'], ['1:1', '정사각 1:1'], ['3:4', '세로 3:4']], state.ratio);
+  fillSelect('selRatio', RATIOS.map((r) => [r.key, r.name]), state.ratio);
   fillSelect('selLines', [4, 5, 6, 7, 8].map((n) => [n, `${n}줄`]), state.lines);
   fillSelect('selStyle', [['', '고르세요', true], ...STYLES.map((x) => [x.key, x.name])], '');
 
@@ -647,7 +640,6 @@ async function makeCandidates() {
   if (!list || !list.length) {
     list = LIBRARY[state.topicKey] || [...LIBRARY.quote.slice(0, 5), ...LIBRARY.share.slice(0, 5)];
   }
-  state.candidates = list;
   const nums = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
   area.innerHTML = `<label class="pick"><span>💬 문구 (${list.length}개)</span><select id="selPhrase"></select></label>`;
   fillSelect('selPhrase', [
