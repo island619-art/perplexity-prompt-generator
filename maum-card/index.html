@@ -372,6 +372,19 @@ const STYLES = [
   { key: 'poem',  name: '시',       desc: '운율과 감성이 담긴' },
   { key: 'essay', name: '에세이',   desc: '서정적이고 사색적인' },
   { key: 'short', name: '짧은 문장', desc: '1~3문장의 간결한' },
+  { key: 'world', name: '세계 명언', desc: '유명 인물의 명언' },
+];
+
+// '세계 명언' 스타일 기본 목록 (출처가 널리 알려진 명언)
+const WORLD_QUOTES = [
+  '천 리 길도\n한 걸음부터\n\n- 노자 -',
+  '세상에서 가장 아름다운 것은\n보이지도 만져지지도 않는다\n\n오직 마음으로\n느낄 수 있을 뿐이다\n\n- 헬렌 켈러 -',
+  '행복은 이미\n만들어진 것이 아니다\n\n그것은 당신의\n행동에서 나온다\n\n- 달라이 라마 -',
+  '우리는 큰일을 할 수 없다\n\n다만 작은 일을\n큰 사랑으로 할 뿐이다\n\n- 마더 테레사 -',
+  '배우고 때때로 익히면\n또한 기쁘지 아니한가\n\n- 공자 -',
+  '오늘을 붙잡아라\n\n내일은 최소한만\n믿어라\n\n- 호라티우스 -',
+  '삶이 있는 한\n희망은 있다\n\n- 키케로 -',
+  '아는 것이\n힘이다\n\n- 프랜시스 베이컨 -',
 ];
 
 const FONTS = [
@@ -582,6 +595,7 @@ async function makeCandidates() {
   const area = $('candArea');
   area.innerHTML = '<div class="loading"><span class="spinner"></span>문구를 만들고 있어요…</div>';
   let list;
+  const worldLib = () => [...WORLD_QUOTES].sort(() => Math.random() - 0.5).slice(0, 5);
   if (keys.gemini) {
     try {
       list = await geminiPhrases();
@@ -590,6 +604,7 @@ async function makeCandidates() {
       toast('AI 문구 만들기에 실패해서 기본 문구를 보여 드려요.');
     }
   }
+  if ((!list || !list.length) && state.style === 'world') list = worldLib();
   if (!list || !list.length) {
     list = LIBRARY[state.topicKey] || [...LIBRARY.quote.slice(0, 3), ...LIBRARY.share.slice(0, 2)];
   }
@@ -609,7 +624,14 @@ async function geminiPhrases() {
     essay: '서정적이고 사색적인 에세이 한 구절',
     short: '1~3문장으로 된 간결한 글',
   }[state.style];
-  const prompt = `당신은 50~70대가 카카오톡과 밴드로 주고받는 감성 글귀 이미지의 작가입니다.
+  const prompt = state.style === 'world' ? `당신은 50~70대가 카카오톡과 밴드로 주고받는 명언 이미지의 편집자입니다.
+주제: ${state.topicName}
+조건:
+- 주제와 어울리는, 실제로 존재하는 세계 유명 인물의 명언 5개를 고르세요. 지어내거나 출처가 불확실한 명언은 절대 쓰지 마세요.
+- 명언은 자연스러운 우리말 번역으로 쓰고, 빈 줄을 뺀 본문을 ${state.lines}줄 이내로 나누세요. 줄바꿈은 \\n 으로 표시하세요.
+- 한 줄은 14자 이내로 짧게 쓰세요.
+- 본문 뒤에 빈 줄을 하나 두고, 마지막 줄에 "- 인물 이름 -" 형식으로 말한 사람을 한국어로 적으세요.
+- 이모지·해시태그·따옴표는 쓰지 마세요.` : `당신은 50~70대가 카카오톡과 밴드로 주고받는 감성 글귀 이미지의 작가입니다.
 주제: ${state.topicName}
 형식: ${styleText}
 조건:
